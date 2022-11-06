@@ -1,6 +1,6 @@
-## QMdnsEngine
+## Qt mDNS
 
-[![Build Status](https://ci.quickmediasolutions.com/job/qmdnsengine/badge/icon)](https://ci.quickmediasolutions.com/job/qmdnsengine/)
+[![Origin](https://github.com/badges/shields/fork)](https://github.com/nitroshare/qmdnsengine)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://opensource.org/licenses/MIT)
 
 This library provides an implementation of multicast DNS as per [RFC 6762](https://tools.ietf.org/html/rfc6762).
