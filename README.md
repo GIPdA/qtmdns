@@ -9,4 +9,4 @@ This library provides an implementation of multicast DNS as per [RFC 6762](https
 
 To learn more about building and using the library, please visit this page:
 
-https://ci.quickmediasolutions.com/job/qmdnsengine-documentation/doxygen/
+https://github.com/GIPdA/qtmdns_examples.git
