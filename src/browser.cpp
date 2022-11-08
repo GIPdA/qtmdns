@@ -104,7 +104,7 @@ public:
         //! Remove sub domain
         auto getLocalDomain = [](QByteArray const& name) -> QByteArray {
             if (qsizetype const i = name.indexOf("._sub"); i >= 0)
-                return name.mid(i+strlen("._sub")+1);
+                return name.mid(i+5/*strlen(._sub)*/+1);
             return name;
         };
 
