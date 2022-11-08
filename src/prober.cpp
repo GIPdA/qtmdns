@@ -1,9 +1,9 @@
-#include <qtmdns/abstractserver.h>
-#include <qtmdns/dns.h>
-#include <qtmdns/message.h>
-#include <qtmdns/prober.h>
-#include <qtmdns/query.h>
-#include <qtmdns/record.h>
+#include <qtmdns/abstractserver.hpp>
+#include <qtmdns/dns.hpp>
+#include <qtmdns/message.hpp>
+#include <qtmdns/prober.hpp>
+#include <qtmdns/query.hpp>
+#include <qtmdns/record.hpp>
 
 #include <QPointer>
 #include <QTimer>

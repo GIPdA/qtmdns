@@ -1,7 +1,7 @@
-#include <qtmdns/mdns.h>
-#include <qtmdns/message.h>
-#include <qtmdns/query.h>
-#include <qtmdns/record.h>
+#include <qtmdns/mdns.hpp>
+#include <qtmdns/message.hpp>
+#include <qtmdns/query.hpp>
+#include <qtmdns/record.hpp>
 
 
 namespace QtMdns {

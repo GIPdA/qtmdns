@@ -1,8 +1,8 @@
-#include <qtmdns/bitmap.h>
-#include <qtmdns/dns.h>
-#include <qtmdns/message.h>
-#include <qtmdns/query.h>
-#include <qtmdns/record.h>
+#include <qtmdns/bitmap.hpp>
+#include <qtmdns/dns.hpp>
+#include <qtmdns/message.hpp>
+#include <qtmdns/query.hpp>
+#include <qtmdns/record.hpp>
 
 #include <QHostAddress>
 #include <QtEndian>

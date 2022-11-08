@@ -1,9 +1,9 @@
-#include <qtmdns/abstractserver.h>
-#include <qtmdns/dns.h>
-#include <qtmdns/hostname.h>
-#include <qtmdns/message.h>
-#include <qtmdns/query.h>
-#include <qtmdns/record.h>
+#include <qtmdns/abstractserver.hpp>
+#include <qtmdns/dns.hpp>
+#include <qtmdns/hostname.hpp>
+#include <qtmdns/message.hpp>
+#include <qtmdns/query.hpp>
+#include <qtmdns/record.hpp>
 
 #include <QHostAddress>
 #include <QHostInfo>

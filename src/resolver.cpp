@@ -1,10 +1,10 @@
-#include <qtmdns/abstractserver.h>
-#include <qtmdns/dns.h>
-#include <qtmdns/cache.h>
-#include <qtmdns/message.h>
-#include <qtmdns/query.h>
-#include <qtmdns/record.h>
-#include <qtmdns/resolver.h>
+#include <qtmdns/abstractserver.hpp>
+#include <qtmdns/dns.hpp>
+#include <qtmdns/cache.hpp>
+#include <qtmdns/message.hpp>
+#include <qtmdns/query.hpp>
+#include <qtmdns/record.hpp>
+#include <qtmdns/resolver.hpp>
 
 #include <QHostAddress>
 #include <QObject>

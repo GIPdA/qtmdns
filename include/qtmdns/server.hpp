@@ -2,7 +2,7 @@
 
 #include "qtmdns_export.hpp"
 
-#include <qtmdns/abstractserver.h>
+#include <qtmdns/abstractserver.hpp>
 
 #include <QObject>
 #include <QScopedPointer>

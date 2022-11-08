@@ -1,5 +1,5 @@
-#include <qtmdns/dns.h>
-#include <qtmdns/query.h>
+#include <qtmdns/dns.hpp>
+#include <qtmdns/query.hpp>
 
 #include <QByteArray>
 #include <QDebug>

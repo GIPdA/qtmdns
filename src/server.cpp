@@ -1,7 +1,7 @@
-#include <qtmdns/dns.h>
-#include <qtmdns/mdns.h>
-#include <qtmdns/message.h>
-#include <qtmdns/server.h>
+#include <qtmdns/dns.hpp>
+#include <qtmdns/mdns.hpp>
+#include <qtmdns/message.hpp>
+#include <qtmdns/server.hpp>
 
 #include <QtGlobal>
 

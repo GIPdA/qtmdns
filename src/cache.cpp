@@ -1,6 +1,6 @@
-#include <qtmdns/cache.h>
-#include <qtmdns/dns.h>
-#include <qtmdns/record.h>
+#include <qtmdns/cache.hpp>
+#include <qtmdns/dns.hpp>
+#include <qtmdns/record.hpp>
 
 #include <QtGlobal>
 #if(QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))

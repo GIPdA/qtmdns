@@ -1,4 +1,4 @@
-#include <qtmdns/abstractserver.h>
+#include <qtmdns/abstractserver.hpp>
 
 using namespace QtMdns;
 

@@ -1,7 +1,7 @@
 
-#include <qtmdns/bitmap.h>
-#include <qtmdns/dns.h>
-#include <qtmdns/record.h>
+#include <qtmdns/bitmap.hpp>
+#include <qtmdns/dns.hpp>
+#include <qtmdns/record.hpp>
 
 #include <QDebug>
 

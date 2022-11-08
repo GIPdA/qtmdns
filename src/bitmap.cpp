@@ -1,4 +1,4 @@
-#include <qtmdns/bitmap.h>
+#include <qtmdns/bitmap.hpp>
 
 namespace QtMdns {
 

@@ -1,4 +1,4 @@
-#include <qtmdns/service.h>
+#include <qtmdns/service.hpp>
 
 namespace QtMdns {
 
