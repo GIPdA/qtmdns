@@ -29,7 +29,7 @@ public:
         connect(server, &AbstractServer::messageReceived, this, &ProviderPrivate::onMessageReceived);
         connect(hostname, &Hostname::hostnameChanged, this, &ProviderPrivate::onHostnameChanged);
 
-        browsePtrProposed.setName(MdnsBrowseType);
+        browsePtrProposed.setName(mdnsDefaults().MdnsBrowseType);
         browsePtrProposed.setType(PTR);
         ptrProposed.setType(PTR);
         srvProposed.setType(SRV);
@@ -117,7 +117,7 @@ public:
         // Determine which records to send based on the queries
         const auto queries = message.queries();
         for (const Query &query : queries) {
-            if (query.type() == PTR && query.name() == MdnsBrowseType) {
+            if (query.type() == PTR && query.name() == mdnsDefaults().MdnsBrowseType) {
                 sendBrowsePtr = true;
             } else if (query.type() == PTR && query.name() == ptrRecord.name()) {
                 sendPtr = true;

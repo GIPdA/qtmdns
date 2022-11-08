@@ -53,7 +53,7 @@ public:
         // the socket and initialize the QUdpSocket with it
 
     #ifdef Q_OS_UNIX
-        if (!socket.bind(address, MdnsPort, QAbstractSocket::ShareAddress)) {
+        if (!socket.bind(address, mdnsDefaults().MdnsPort, QAbstractSocket::ShareAddress)) {
             int arg = 1;
             if (setsockopt(socket.socketDescriptor(), SOL_SOCKET, SO_REUSEADDR,
                     reinterpret_cast<char*>(&arg), sizeof(int))) {
@@ -61,7 +61,7 @@ public:
                 return false;
             }
     #endif
-            if (!socket.bind(address, MdnsPort, QAbstractSocket::ReuseAddressHint)) {
+            if (!socket.bind(address, mdnsDefaults().MdnsPort, QAbstractSocket::ReuseAddressHint)) {
                 emit q_ptr->error(socket.errorString());
                 return false;
             }
@@ -94,10 +94,10 @@ public:
                     continue;
 
                 if (ipv4Bound)
-                    ipv4Socket.joinMulticastGroup(MdnsIpv4Address, networkInterface);
+                    ipv4Socket.joinMulticastGroup(mdnsDefaults().MdnsIpv4Address, networkInterface);
 
                 if (ipv6Bound)
-                    ipv6Socket.joinMulticastGroup(MdnsIpv6Address, networkInterface);
+                    ipv6Socket.joinMulticastGroup(mdnsDefaults().MdnsIpv6Address, networkInterface);
             }
         } else {
             qCWarning(log, "Socket bind failed.");
@@ -170,10 +170,10 @@ void Server::sendMessageToAll(const Message &message)
             continue;
 
         d->ipv4Socket.setMulticastInterface(interface);
-        d->ipv4Socket.writeDatagram(packet, MdnsIpv4Address, MdnsPort);
+        d->ipv4Socket.writeDatagram(packet, mdnsDefaults().MdnsIpv4Address, mdnsDefaults().MdnsPort);
 
         d->ipv6Socket.setMulticastInterface(interface);
-        d->ipv6Socket.writeDatagram(packet, MdnsIpv6Address, MdnsPort);
+        d->ipv6Socket.writeDatagram(packet, mdnsDefaults().MdnsIpv6Address, mdnsDefaults().MdnsPort);
     }
 }
 

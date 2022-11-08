@@ -111,7 +111,7 @@ public:
         if ( ! message.isResponse())
             return;
 
-        bool const any = (type == MdnsBrowseType);
+        bool const any = (type == mdnsDefaults().MdnsBrowseType);
         QByteArray const localType = getLocalDomain(type);
 
         // Use a set to track all services that are updated in the message to
@@ -123,7 +123,7 @@ public:
 
             switch (record.type()) {
             case PTR:
-                if (any && record.name() == MdnsBrowseType) {
+                if (any && record.name() == mdnsDefaults().MdnsBrowseType) {
                     ptrTargets.insert(record.target());
                     serviceTimer.start();
                     cacheRecord = true;

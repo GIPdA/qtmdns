@@ -127,11 +127,11 @@ void Message::addRecord(const Record &record)
 
 void Message::reply(const Message &other)
 {
-    if (other.port() == MdnsPort) {
+    if (other.port() == mdnsDefaults().MdnsPort) {
         if (other.address().protocol() == QAbstractSocket::IPv4Protocol)
-            setAddress(MdnsIpv4Address);
+            setAddress(mdnsDefaults().MdnsIpv4Address);
         else
-            setAddress(MdnsIpv6Address);
+            setAddress(mdnsDefaults().MdnsIpv6Address);
     } else {
         setAddress(other.address());
     }

@@ -2,9 +2,15 @@
 
 namespace QtMdns {
 
-const quint16 MdnsPort = 5353;
-const QHostAddress MdnsIpv4Address("224.0.0.251");
-const QHostAddress MdnsIpv6Address("ff02::fb");
-const QByteArray MdnsBrowseType("_services._dns-sd._udp.local.");
+Defaults const& mdnsDefaults()
+{
+    static Defaults const def {
+        .MdnsPort = 5353,
+        .MdnsIpv4Address = QHostAddress{"224.0.0.251"},
+        .MdnsIpv6Address = QHostAddress{"ff02::fb"},
+        .MdnsBrowseType = QByteArray{"_services._dns-sd._udp.local."}
+    };
+    return def;
+}
 
 } // namespace QtMdns

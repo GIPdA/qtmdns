@@ -7,24 +7,14 @@
 
 namespace QtMdns {
 
-/**
- * @brief Standard port for mDNS
- */
-QTMDNS_EXPORT extern const quint16 MdnsPort;
+struct Defaults
+{
+    quint16 const MdnsPort; //! Standard port for mDNS
+    QHostAddress const MdnsIpv4Address; //! Standard IPv4 address for mDNS
+    QHostAddress const MdnsIpv6Address; //! Standard IPv6 address for mDNS
+    QByteArray const MdnsBrowseType; //! Service type for browsing service types
+};
 
-/**
- * @brief Standard IPv4 address for mDNS
- */
-QTMDNS_EXPORT extern const QHostAddress MdnsIpv4Address;
-
-/**
- * @brief Standard IPv6 address for mDNS
- */
-QTMDNS_EXPORT extern const QHostAddress MdnsIpv6Address;
-
-/**
- * @brief Service type for browsing service types
- */
-QTMDNS_EXPORT extern const QByteArray MdnsBrowseType;
+Defaults const& mdnsDefaults();
 
 } // namespace QtMdns
