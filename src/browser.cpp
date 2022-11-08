@@ -159,10 +159,10 @@ public:
             bool cacheRecord = false;
 
             switch (record.type()) {
-                case A:
-                case AAAA:
-                    cacheRecord = hostnames.contains(record.name());
-                    break;
+            case A:
+            case AAAA:
+                cacheRecord = hostnames.contains(record.name());
+                break;
             }
 
             if (cacheRecord)
