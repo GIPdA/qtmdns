@@ -69,6 +69,12 @@ public:
     quint16 port() const;
     void setPort(quint16 port);
 
+    QHostAddress const& hostAddress() const;
+    void setHostAddress(QHostAddress const& address);
+
+    QHostAddress const& hostAddressIPv6() const;
+    void setHostAddressIPv6(QHostAddress const& address);
+
     /**
      * @brief Retrieve the attributes for the service
      *

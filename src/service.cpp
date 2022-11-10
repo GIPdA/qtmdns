@@ -9,6 +9,8 @@ public:
     QByteArray name;
     QByteArray hostname;
     quint16 port;
+    QHostAddress hostAddress;
+    QHostAddress hostAddressIPv6;
     QMap<QByteArray, QByteArray> attributes;
 };
 
@@ -97,6 +99,30 @@ void Service::setPort(quint16 port)
     d->port = port;
 }
 
+QHostAddress const& Service::hostAddress() const
+{
+    Q_D(const Service);
+    return d->hostAddress;
+}
+
+void Service::setHostAddress(QHostAddress const& address)
+{
+    Q_D(Service);
+    d->hostAddress = address;
+}
+
+QHostAddress const& Service::hostAddressIPv6() const
+{
+    Q_D(const Service);
+    return d->hostAddressIPv6;
+}
+
+void Service::setHostAddressIPv6(QHostAddress const& address)
+{
+    Q_D(Service);
+    d->hostAddressIPv6 = address;
+}
+
 QMap<QByteArray, QByteArray> Service::attributes() const
 {
     Q_D(const Service);
@@ -126,6 +152,7 @@ QDebug operator<<(QDebug debug, const Service &service)
         << ", type: " << service.type()
         << ", hostname: " << service.hostname()
         << ", port: " << service.port()
+        << ", host address: " << service.hostAddress()
         << ", attributes: " << service.attributes()
         << ")";
 

@@ -65,11 +65,18 @@ public:
         if (!cache->lookupRecord(fqName, SRV, srvRecord))
             return true;
 
+        Record aRecord;
+        cache->lookupRecord(srvRecord.target(), A, aRecord);
+        Record aaaaRecord;
+        cache->lookupRecord(srvRecord.target(), AAAA, aaaaRecord);
+
         Service service;
         service.setName(serviceName);
         service.setType(serviceType);
         service.setHostname(srvRecord.target());
         service.setPort(srvRecord.port());
+        service.setHostAddress(aRecord.address());
+        service.setHostAddressIPv6(aaaaRecord.address());
 
         // If TXT records are available for the service, add their values
         QList<Record> txtRecords;
@@ -88,13 +95,11 @@ public:
         // addition; emit the appropriate signal
         if (!services.contains(fqName)) {
             emit q_ptr->serviceAdded(service);
-        } else if(services.value(fqName) != service) {
+        } else if (services.value(fqName) != service) {
             emit q_ptr->serviceUpdated(service);
         }
 
         services.insert(fqName, service);
-        hostnames.insert(service.hostname());
-
         return false;
     }
 
@@ -136,8 +141,29 @@ public:
             case TXT:
                 if (any || record.name().endsWith("." + localType)) {
                     updateNames.insert(record.name());
+                    if (record.type() == SRV)
+                        hostnames.insert(record.target());
                     cacheRecord = true;
                 }
+                break;
+            default:
+                break;
+            }
+
+            if (cacheRecord)
+                cache->addRecord(record);
+        }
+
+        // Cache A / AAAA records after services are processed to ensure hostnames are known
+        for (const Record &record : records) {
+            bool cacheRecord = false;
+
+            switch (record.type()) {
+            case A:
+            case AAAA:
+                cacheRecord = hostnames.contains(record.name());
+                break;
+            default:
                 break;
             }
 
@@ -152,21 +178,6 @@ public:
             if (updateService(name)) {
                 queryNames.insert(name);
             }
-        }
-
-        // Cache A / AAAA records after services are processed to ensure hostnames are known
-        for (const Record &record : records) {
-            bool cacheRecord = false;
-
-            switch (record.type()) {
-            case A:
-            case AAAA:
-                cacheRecord = hostnames.contains(record.name());
-                break;
-            }
-
-            if (cacheRecord)
-                cache->addRecord(record);
         }
 
         // Build and send a query for all of the SRV and TXT records
