@@ -303,7 +303,7 @@ private:
     void updateHostnames()
     {
         hostnames.clear();
-        for (Service const& service : services) {
+        for (Service const& service : qAsConst(services)) {
             hostnames.insert(service.hostname());
         }
     }
