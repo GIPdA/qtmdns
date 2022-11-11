@@ -24,11 +24,11 @@ class BrowserPrivate : public QObject
     Browser * const q_ptr {nullptr};
 
 public:
-    explicit BrowserPrivate(Browser* browser, AbstractServer* server, QByteArray type, std::shared_ptr<Cache> existingCache) :
+    explicit BrowserPrivate(Browser* browser, AbstractServer* server, QByteArray _type, std::shared_ptr<Cache> existingCache) :
         QObject(browser),
         q_ptr(browser),
         server(server),
-        type(std::move(type)),
+        type(std::move(_type)),
         cache(existingCache ? std::move(existingCache) : std::make_shared<Cache>())
     {
         connect(server, &AbstractServer::messageReceived, this, &BrowserPrivate::onMessageReceived);
@@ -44,7 +44,18 @@ public:
         serviceTimer.setSingleShot(true);
 
         // Immediately begin browsing for services
+        if ( ! type.isEmpty())
+            start();
+    }
+
+    void start()
+    {
         onQueryTimeout();
+    }
+    void stop()
+    {
+        queryTimer.stop();
+        serviceTimer.stop();
     }
 
     // TODO: multiple SRV records not supported
@@ -238,6 +249,9 @@ public:
 
     void onQueryTimeout()
     {
+        if (type.isEmpty())
+            return;
+
         Query query;
             query.setName(type);
             query.setType(PTR);
@@ -317,8 +331,31 @@ Browser::Browser(AbstractServer* server, QByteArray type, QObject* parent) :
     dd_ptr(new BrowserPrivate(this, server, std::move(type), nullptr))
 {}
 
+Browser::Browser(AbstractServer* server, QObject* parent) :
+    QObject(parent),
+    dd_ptr(new BrowserPrivate(this, server, {}, nullptr))
+{
+}
+
 Browser::~Browser()
 {
+}
+
+void Browser::startLookup(QByteArray type)
+{
+    Q_D(Browser);
+    if (d->type == type)
+        return;
+
+    bool const needStart = d->type.isEmpty();
+    d->type = type;
+
+    // TODO: cleanup?
+
+    if (d->type.isEmpty())
+        d->stop();
+    else if (needStart)
+        d->start();
 }
 
 } // namespace QtMdns
