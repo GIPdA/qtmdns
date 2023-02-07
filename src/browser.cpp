@@ -331,6 +331,12 @@ Browser::Browser(AbstractServer* server, QByteArray type, QObject* parent) :
     dd_ptr(new BrowserPrivate(this, server, std::move(type), nullptr))
 {}
 
+
+Browser::Browser(AbstractServer* server, std::shared_ptr<Cache> cache, QObject* parent) :
+    QObject(parent),
+    dd_ptr(new BrowserPrivate(this, server, {}, std::move(cache)))
+{}
+
 Browser::Browser(AbstractServer* server, QObject* parent) :
     QObject(parent),
     dd_ptr(new BrowserPrivate(this, server, {}, nullptr))

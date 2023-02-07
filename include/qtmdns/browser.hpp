@@ -58,6 +58,7 @@ public:
      */
     Browser(AbstractServer* server, QByteArray type, std::shared_ptr<Cache> cache, QObject* parent = nullptr);
     Browser(AbstractServer* server, QByteArray type, QObject* parent = nullptr);
+    Browser(AbstractServer* server, std::shared_ptr<Cache> cache, QObject* parent = nullptr);
     Browser(AbstractServer* server, QObject* parent = nullptr);
     ~Browser() override;
 
