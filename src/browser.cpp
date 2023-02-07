@@ -117,18 +117,10 @@ public:
 
     void onMessageReceived(const Message &message)
     {
-        //! Remove sub domain
-        auto getLocalDomain = [](QByteArray const& name) -> QByteArray {
-            if (qsizetype const i = name.indexOf("._sub"); i >= 0)
-                return name.mid(i+5/*strlen(._sub)*/+1);
-            return name;
-        };
-
         if ( ! message.isResponse())
             return;
 
         bool const any = (type == mdnsDefaults().MdnsBrowseType);
-        QByteArray const localType = getLocalDomain(type);
 
         // Use a set to track all services that are updated in the message to
         // prevent unnecessary queries for SRV and TXT records
@@ -144,13 +136,16 @@ public:
                     serviceTimer.start();
                     cacheRecord = true;
                 } else if (any || record.name() == type) {
+                    domainName = record.target(); // MAYBE: Should it be reset somewhere?
                     updateNames.insert(record.target());
                     cacheRecord = true;
                 }
                 break;
             case SRV:
             case TXT:
-                if (any || record.name().endsWith("." + localType)) {
+                // Filter records by the domain name in PTR
+                //if (any || record.name().endsWith("." + localType)) {
+                if (any || record.name() == domainName) {
                     updateNames.insert(record.name());
                     if (record.type() == SRV)
                         hostnames.insert(record.target());
@@ -310,6 +305,7 @@ private:
 
     QPointer<AbstractServer> server;
     QByteArray type;
+    QByteArray domainName;
 
     std::shared_ptr<Cache> cache;
     QSet<QByteArray> ptrTargets;
