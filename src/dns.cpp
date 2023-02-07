@@ -327,8 +327,9 @@ bool fromPacket(QByteArray const& packet, Message& message)
     quint16 const nRecord = nAnswer + nAuthority + nAdditional;
     for (quint16 i = 0; i < nRecord; ++i) {
         Record record;
-        if ( ! parseRecord(packet, offset, record))
+        if ( ! parseRecord(packet, offset, record)) {
             return false;
+        }
 
         message.addRecord(record);
     }

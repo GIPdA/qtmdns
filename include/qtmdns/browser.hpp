@@ -72,7 +72,7 @@ Q_SIGNALS:
      * received. If TXT records are received later, the serviceUpdated()
      * signal will be emitted.
      */
-    void serviceAdded(const Service &service);
+    void serviceAdded(QtMdns::Service const& service);
 
     /**
      * @brief Indicate that the specified service was updated
@@ -80,7 +80,7 @@ Q_SIGNALS:
      * This signal is emitted when the SRV record for a service (identified by
      * its name and type) or a TXT record has changed.
      */
-    void serviceUpdated(const Service &service);
+    void serviceUpdated(QtMdns::Service const& service);
 
     /**
      * @brief Indicate that the specified service was removed
@@ -89,7 +89,7 @@ Q_SIGNALS:
      * expiring from the cache. This will also occur when an updated PTR or
      * SRV record is received with a TTL of 0.
      */
-    void serviceRemoved(const Service &service);
+    void serviceRemoved(QtMdns::Service const& service);
 
 private:
     Q_DECLARE_PRIVATE_D(dd_ptr, Browser)
