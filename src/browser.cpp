@@ -93,10 +93,10 @@ public:
         QList<Record> txtRecords;
         if (cache->lookupRecords(fqName, TXT, txtRecords)) {
             QMap<QByteArray, QByteArray> attributes;
-            for (const Record &record : qAsConst(txtRecords)) {
-                for (auto i = record.attributes().constBegin();
-                        i != record.attributes().constEnd(); ++i) {
-                    attributes.insert(i.key(), i.value());
+            for (Record const& record : qAsConst(txtRecords)) {
+                auto const attrs = record.attributes();
+                for (auto it = attrs.cbegin(); it != attrs.cend(); ++it) {
+                    attributes.insert(it.key(), it.value());
                 }
             }
             service.setAttributes(attributes);
