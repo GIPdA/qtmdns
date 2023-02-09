@@ -47,6 +47,7 @@ public:
         if ( ! type.isEmpty())
             start();
     }
+    ~BrowserPrivate() override = default;
 
     void start()
     {
