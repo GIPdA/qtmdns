@@ -12,11 +12,10 @@
 #include <QObject>
 #include <QPointer>
 #include <QTimer>
-#include <utility>
 
 namespace QtMdns {
 
-class HostnamePrivate : public QObject
+class HostnamePrivate
 {
     Q_DISABLE_COPY_MOVE(HostnamePrivate)
     Q_DECLARE_PUBLIC(Hostname)
@@ -28,9 +27,12 @@ public:
         server(server),
         wantedHostname(std::move(wantedName))
     {
-        connect(server, &AbstractServer::messageReceived, this, &HostnamePrivate::onMessageReceived);
-        connect(&registrationTimer, &QTimer::timeout, this, &HostnamePrivate::onRegistrationTimeout);
-        connect(&rebroadcastTimer, &QTimer::timeout, this, &HostnamePrivate::onRebroadcastTimeout);
+        QObject::connect(server, &AbstractServer::messageReceived, hostname,
+                         [&](Message const& message) { onMessageReceived(message); });
+        QObject::connect(&registrationTimer, &QTimer::timeout, hostname,
+                         [&]() { onRegistrationTimeout(); });
+        QObject::connect(&rebroadcastTimer, &QTimer::timeout, hostname,
+                         [&]() { onRebroadcastTimeout(); });
 
         registrationTimer.setInterval(2 * 1000);
         registrationTimer.setSingleShot(true);
