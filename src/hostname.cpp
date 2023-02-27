@@ -12,6 +12,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QTimer>
+#include <utility>
 
 namespace QtMdns {
 
@@ -22,10 +23,10 @@ class HostnamePrivate : public QObject
     Hostname * const q_ptr {nullptr};
 
 public:
-    HostnamePrivate(Hostname* hostname, AbstractServer* server) :
-        QObject(hostname),
+    HostnamePrivate(Hostname* hostname, AbstractServer* server, QByteArray wantedName) :
         q_ptr(hostname),
-        server(server)
+        server(server),
+        wantedHostname(std::move(wantedName))
     {
         connect(server, &AbstractServer::messageReceived, this, &HostnamePrivate::onMessageReceived);
         connect(&registrationTimer, &QTimer::timeout, this, &HostnamePrivate::onRegistrationTimeout);
@@ -45,7 +46,7 @@ public:
     {
         // Begin with the local hostname and replace any "." with "-" (I'm looking
         // at you, macOS)
-        QByteArray localHostname = QHostInfo::localHostName().toUtf8();
+        QByteArray localHostname = wantedHostname;
         localHostname = localHostname.replace('.', '-');
 
         // If the suffix > 1, then append a "-2", "-3", etc. to the hostname to
@@ -155,6 +156,7 @@ public:
 private:
     QPointer<AbstractServer> server;
 
+    QByteArray wantedHostname;
     QByteArray hostnamePrev;
     QByteArray hostname;
     bool hostnameRegistered {false};
@@ -167,13 +169,16 @@ private:
 
 Hostname::Hostname(AbstractServer* server, QObject* parent) :
     QObject(parent),
-    dd_ptr(new HostnamePrivate(this, server))
-{
-}
+    dd_ptr(new HostnamePrivate(this, server, QHostInfo::localHostName().toUtf8()))
+{}
+
+Hostname::Hostname(AbstractServer* server, QByteArray hostname, QObject* parent) :
+    QObject(parent),
+    dd_ptr(new HostnamePrivate(this, server, std::move(hostname)))
+{}
 
 Hostname::~Hostname()
-{
-}
+{}
 
 
 bool Hostname::isRegistered() const

@@ -18,6 +18,8 @@ class QTMDNS_EXPORT HostnamePrivate;
  * be used. This class asserts a hostname (by first confirming that it is not
  * in use) and then responds to A and AAAA queries for the hostname.
  *
+ * The wanted hostname can be specified, otherwise it uses the machine's hostname.
+ *
  * @code
  * QtMdns::Hostname hostname(&server);
  *
@@ -31,6 +33,7 @@ class QTMDNS_EXPORT Hostname : public QObject
     Q_OBJECT
 public:
     Hostname(AbstractServer* server, QObject* parent = nullptr);
+    Hostname(AbstractServer* server, QByteArray hostname, QObject* parent = nullptr);
     ~Hostname() override;
 
     /**
