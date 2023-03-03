@@ -119,7 +119,8 @@ public:
     /**
      * @brief Add a query to the message
      */
-    void addQuery(const Query &query);
+    void addQuery(Query const& query);
+    void addQueries(QList<Query> const& query);
 
     /**
      * @brief Retrieve a list of records in the message

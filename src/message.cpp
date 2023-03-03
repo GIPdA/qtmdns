@@ -107,10 +107,16 @@ QList<Query> Message::queries() const
     return d->queries;
 }
 
-void Message::addQuery(const Query &query)
+void Message::addQuery(Query const& query)
 {
     Q_D(Message);
     d->queries.append(query);
+}
+
+void Message::addQueries(QList<Query> const& queries)
+{
+    Q_D(Message);
+    d->queries.append(queries);
 }
 
 QList<Record> Message::records() const

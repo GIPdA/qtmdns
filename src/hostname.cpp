@@ -126,8 +126,11 @@ public:
 
             Message reply;
             reply.reply(message);
+
             const auto queries = message.queries();
-            for (const Query &query : queries) {
+            reply.addQueries(queries);
+
+            for (Query const& query : queries) {
                 if ((query.type() == A || query.type() == AAAA) && query.name() == hostname) {
                     Record record;
                     if (generateRecord(message.address(), query.type(), record)) {
