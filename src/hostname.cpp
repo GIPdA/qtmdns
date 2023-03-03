@@ -58,8 +58,9 @@ public:
 
         // If the suffix > 1, then append a "-2", "-3", etc. to the hostname to
         // aid in finding one that is unique and not in use
-        hostname = (hostnameSuffix == 1 ? localHostname:
-            localHostname + "-" + QByteArray::number(hostnameSuffix)) + ".local.";
+        hostname = (hostnameSuffix == 1
+                    ? localHostname
+                    : localHostname + "-" + QByteArray::number(hostnameSuffix)) + ".local.";
 
         // Compose a query for A and AAAA records matching the hostname
         Query ipv4Query;
@@ -80,30 +81,32 @@ public:
         registrationTimer.start();
     }
 
-    bool generateRecord(const QHostAddress &srcAddress, quint16 type, Record &record)
+    std::optional<Record> generateRecord(QHostAddress const& srcAddress, quint16 type)
     {
         // Attempt to find the interface that corresponds with the provided
         // address and determine this device's address from the interface
 
         const auto interfaces = QNetworkInterface::allInterfaces();
-        for (const QNetworkInterface &networkInterface : interfaces) {
+        for (QNetworkInterface const& networkInterface : interfaces) {
             const auto entries = networkInterface.addressEntries();
-            for (const QNetworkAddressEntry &entry : entries) {
+            for (QNetworkAddressEntry const& entry : entries) {
                 if (srcAddress.isInSubnet(entry.ip(), entry.prefixLength())) {
-                    for (const QNetworkAddressEntry &newEntry : entries) {
+                    for (QNetworkAddressEntry const& newEntry : entries) {
                         QHostAddress address = newEntry.ip();
                         if ((address.protocol() == QAbstractSocket::IPv4Protocol && type == A) ||
-                                (address.protocol() == QAbstractSocket::IPv6Protocol && type == AAAA)) {
+                            (address.protocol() == QAbstractSocket::IPv6Protocol && type == AAAA))
+                        {
+                            Record record;
                             record.setName(hostname);
                             record.setType(type);
                             record.setAddress(address);
-                            return true;
+                            return record;
                         }
                     }
                 }
             }
         }
-        return false;
+        return std::nullopt;
     }
 
 
@@ -132,10 +135,8 @@ public:
 
             for (Query const& query : queries) {
                 if ((query.type() == A || query.type() == AAAA) && query.name() == hostname) {
-                    Record record;
-                    if (generateRecord(message.address(), query.type(), record)) {
-                        reply.addRecord(record);
-                    }
+                    if (auto record = generateRecord(message.address(), query.type()); record)
+                        reply.addRecord(*record);
                 }
             }
 
