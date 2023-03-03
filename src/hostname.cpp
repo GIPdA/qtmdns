@@ -34,6 +34,9 @@ public:
         QObject::connect(&rebroadcastTimer, &QTimer::timeout, hostname,
                          [&]() { onRebroadcastTimeout(); });
 
+        if (qsizetype const idx = wantedHostname.lastIndexOf(".local"); idx > 0)
+            wantedHostname.truncate(idx);
+
         registrationTimer.setInterval(2 * 1000);
         registrationTimer.setSingleShot(true);
 
