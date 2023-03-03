@@ -54,6 +54,8 @@ public:
         QByteArray localHostname = wantedHostname;
         localHostname = localHostname.replace('.', '-');
 
+        Q_ASSERT( ! localHostname.isEmpty());
+
         // If the suffix > 1, then append a "-2", "-3", etc. to the hostname to
         // aid in finding one that is unique and not in use
         hostname = (hostnameSuffix == 1 ? localHostname:
