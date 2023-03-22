@@ -158,6 +158,12 @@ void Server::sendMessage(const Message &message)
     }
 }
 
+static bool sendDatagram(QUdpSocket& socket, QHostAddress const& addr, QByteArray const& packet, QNetworkInterface const& interface)
+{
+    socket.setMulticastInterface(interface);
+    return socket.writeDatagram(packet, addr, mdnsDefaults().MdnsPort) > 0;
+}
+
 void Server::sendMessageToAll(const Message &message)
 {
     Q_D(Server);
@@ -169,11 +175,20 @@ void Server::sendMessageToAll(const Message &message)
         if ( ! (interface.flags() & (QNetworkInterface::IsUp | QNetworkInterface::IsRunning | QNetworkInterface::CanMulticast)))
             continue;
 
-        d->ipv4Socket.setMulticastInterface(interface);
-        d->ipv4Socket.writeDatagram(packet, mdnsDefaults().MdnsIpv4Address, mdnsDefaults().MdnsPort);
+        // Send and retry once "later" if failed.
+        // On macOS, it may sometimes fail on first app start. An immediate re-send doesn't work.
+        if ( ! sendDatagram(d->ipv4Socket, mdnsDefaults().MdnsIpv4Address, packet, interface)) {
+            QTimer::singleShot(10, this, [interface, packet, socket=&d->ipv4Socket]() {
+                sendDatagram(*socket, mdnsDefaults().MdnsIpv4Address, packet, interface);
+            });
+        }
 
-        d->ipv6Socket.setMulticastInterface(interface);
-        d->ipv6Socket.writeDatagram(packet, mdnsDefaults().MdnsIpv6Address, mdnsDefaults().MdnsPort);
+        if ( ! sendDatagram(d->ipv6Socket, mdnsDefaults().MdnsIpv6Address, packet, interface)) {
+            QTimer::singleShot(10, this, [interface, packet, socket=&d->ipv6Socket]() {
+                sendDatagram(*socket, mdnsDefaults().MdnsIpv6Address, packet, interface);
+            });
+        }
+
     }
 }
 
